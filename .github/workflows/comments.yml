@@ -10,9 +10,23 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
+        
       - name: Display Comment Information
         run: |
           echo "Comment was made by: ${{ github.actor }}"
           echo "Comment body: ${{ github.event.comment.body }}"
+      
+      - name: Check for bug or error and label
+        if: contains(github.event.comment.body, 'bug') || contains(github.event.comment.body, 'error')
+        run: |
+          issue_number=${{ github.event.issue.number }}
+          repo=${{ github.repository }}
+          label="bug"
+          curl -X POST \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            -d '{"labels":["'"$label"'"]}' \
+            "https://api.github.com/repos/$repo/issues/$issue_number/labels"
+      
       - name: Run a simple script
         run: echo "This workflow was triggered by an issue comment!"

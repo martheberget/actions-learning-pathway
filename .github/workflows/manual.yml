@@ -1,0 +1,13 @@
+name: Manual Workflow Example
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-manual-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      - name: Run a simple script
+        run: echo "Hello, this workflow was triggered manually!"

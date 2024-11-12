@@ -1,0 +1,18 @@
+name: Issue Comment Workflow Example
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  run-on-issue-comment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      - name: Display Comment Information
+        run: |
+          echo "Comment was made by: ${{ github.actor }}"
+          echo "Comment body: ${{ github.event.comment.body }}"
+      - name: Run a simple script
+        run: echo "This workflow was triggered by an issue comment!"
